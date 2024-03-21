@@ -1,1 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@include mat.core();
+$UI_Foundation-primary: mat.define-palette(mat.$indigo-palette);
+$UI_Foundation-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+
+$UI_Foundation-theme: mat.define-light-theme((color: (primary: $UI_Foundation-primary, accent: $UI_Foundation-accent )));
+@include mat.all-component-themes($UI_Foundation-theme);
