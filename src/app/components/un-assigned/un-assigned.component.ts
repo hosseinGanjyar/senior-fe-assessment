@@ -12,31 +12,32 @@ import { UnAssignedService } from '../../shared/services/un-assigned/un-assigned
 })
 export class UnAssignedComponent {
   imageNameList: string[] = [];
-  currentPage: number = 1;
+  currentPage: number = 0;
   totalPage!: number;
   pageTotal: number = 3;
 
   constructor(private imageService: UnAssignedService) { }
 
   ngOnInit() {
-
-    this.getImageNameList();
+    this.pagingImages();
   }
 
-  getImageNameList() {
+  pagingImages() {
+    let _this = this;
+
     this.imageService.getImageNameList(this.currentPage, this.pageTotal)
       .subscribe(
-        (res: any) => {
-          this.imageNameList = res;
+        {
+          next(value: string[] | undefined) {
+            debugger;
+
+            if (value)
+              _this.imageNameList = value;
+            else // try to get data from local storage
+              _this.imageService.setImageNameListToStorage();
+          }
         }
       );
   }
 
-  pagingImages() {
-    this.imageService
-      .getImageNameList(this.currentPage, this.pageTotal)
-      .subscribe((res: string[]) => {
-        this.imageNameList = res;
-      });
-  }
 }

@@ -41,10 +41,10 @@ export class FileService {
       );
   }
 
-  getImageNameList(from: number, count: number): Observable<string[]> {
+  getImageNameList(from?: number, count?: number): Observable<string[]> {
     return this.imageNameList.pipe(
       map((res: string[]) => {
-        return res.splice(from, count);
+        return (from && count) ? res.splice(from, count) : res;
       })
     );
   }
