@@ -7,9 +7,10 @@ import { StorageService } from '../storage/storage.service';
   providedIn: 'root'
 })
 export class UnAssignedService {
-  private _currentImageNameList: BehaviorSubject<string[] | undefined> = new BehaviorSubject<string[] | undefined>(undefined);
-  public readonly currentImageNameList: Observable<string[] | undefined> = this._currentImageNameList?.asObservable();
-  private QName = 'q-unAssigned';
+  private _currentImageNameList$: BehaviorSubject<string[] | undefined> = new BehaviorSubject<string[] | undefined>(undefined);
+  public readonly currentImageNameList$: Observable<string[] | undefined> = this._currentImageNameList$?.asObservable();
+  private Q_unAssigned = 'q-unAssigned';
+  private Q_assigned = 'q-assigned';
 
   constructor(
     private store: StorageService,
@@ -17,15 +18,14 @@ export class UnAssignedService {
   ) { }
 
   private getCurrentImageNameList(): Observable<string[] | undefined> {
-    return this.currentImageNameList;
+    return this.currentImageNameList$;
   }
 
-  getImageNameList(from?: number, count?: number): Observable<string[] | undefined> {
+  getImageNameList(): Observable<string[] | undefined> {
     return this.getCurrentImageNameList()
       .pipe(
         map((res: string[] | undefined) => {
           if (res) {
-            // return res.splice(from, count);
             return res;
           }
           else
@@ -35,7 +35,7 @@ export class UnAssignedService {
   }
 
   setImageNameListToStorage(): void {
-    const Q_unAssigned = this.store.localGetItem(this.QName);
+    const Q_unAssigned = this.store.localGetItem(this.Q_unAssigned);
 
     if (Q_unAssigned) {
       this.setCurrentImageNameList(JSON.parse(Q_unAssigned));
@@ -55,15 +55,33 @@ export class UnAssignedService {
   };
 
   setCurrentImageNameList(data: string[]) {
-    this._currentImageNameList.next(data);
+    this._currentImageNameList$.next(data);
   }
 
   fillQUnAssigned(data: string[]) {
-    this.store.localSetItem(this.QName, JSON.stringify(data));
+    this.store.localSetItem(this.Q_unAssigned, JSON.stringify(data));
+    this.store.localSetItem(this.Q_assigned, JSON.stringify([]));
   }
 
-  unAssignImage(image: string) {
-    this._currentImageNameList.next([image]);
+  popNewImageFromQ(qName: string, imageName: string) {
+    let q = this.store.localGetItem(qName);
+
+    if (typeof q === 'string') {
+      let qImageNames: string[] = JSON.parse(q);
+      qImageNames = qImageNames.filter(x => x != imageName);
+      this.store.localSetItem(qName, JSON.stringify(qImageNames));
+      this.setCurrentImageNameList(qImageNames);
+    }
+  }
+
+  pushNewImageToQ(qName: string, imageName: string) {
+    let q = this.store.localGetItem(qName);
+
+    if (typeof q === 'string') {
+      let qImageNames: string[] = JSON.parse(q);
+      qImageNames.push(imageName);
+      this.store.localSetItem(qName, JSON.stringify(qImageNames));
+    }
   }
 
 }

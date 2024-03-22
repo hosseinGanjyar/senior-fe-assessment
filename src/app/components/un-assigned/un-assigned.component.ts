@@ -41,6 +41,8 @@ export class UnAssignedComponent {
   }
 
   assignImage(imageName: string) {
+    this.imageService.popNewImageFromQ('q-unAssigned', imageName);
+    this.imageService.pushNewImageToQ('q-assigned', imageName);
   }
 
 }
