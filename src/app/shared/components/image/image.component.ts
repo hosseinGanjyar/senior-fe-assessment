@@ -1,5 +1,6 @@
 import { CommonModule, IMAGE_CONFIG, NgOptimizedImage } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -9,6 +10,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   imports: [
     CommonModule,
     NgOptimizedImage,
+    MatButtonModule,
     MatProgressBarModule,
     MatIconModule,
   ],
@@ -25,12 +27,15 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class ImageComponent {
   baseUrl: string =
-    'https://vst-test-images.s3.ap-southeast-1.amazonaws.com/sfe-images/';
+    'https://vst-test-images.s3.ap-southeast-1.amazonaws.com/sfe-images/a';
   loading: boolean = true;
   hasError: boolean = false;
   reloading: boolean = false;
 
   @Input() imgName!: string;
+  @Input() hasAssigned: boolean = false;
+
+  @Output() toggleAssignImage: EventEmitter<string> = new EventEmitter<string>();
 
   ngOnInit() {
   }
@@ -53,5 +58,9 @@ export class ImageComponent {
     setTimeout(() => {
       this.reloading = false;
     }, 0);
+  }
+
+  onToggleAssignImage(imageName: string) {
+    this.toggleAssignImage.emit(imageName);
   }
 }

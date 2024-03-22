@@ -40,4 +40,7 @@ export class UnAssignedComponent {
       );
   }
 
+  assignImage(imageName: string) {
+  }
+
 }
