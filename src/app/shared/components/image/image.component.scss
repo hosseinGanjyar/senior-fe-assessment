@@ -1,0 +1,15 @@
+.error-loading-block,
+.loading {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-loading-block {
+  flex-flow: column;
+}
+
+.blur {
+  filter: blur(15px);
+}

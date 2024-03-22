@@ -1,46 +1,65 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { map } from 'rxjs';
+import { ImageComponent } from '../../shared/components/image/image.component';
 import { ImageService } from '../../shared/services/image/image.service';
 
 @Component({
   selector: 'app-images',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ImageComponent],
   templateUrl: './images.component.html',
-  styleUrl: './images.component.scss'
+  styleUrl: './images.component.scss',
 })
 export class ImagesComponent {
   imageNameList: string[] = [];
-  currentPage: number = 0;
+  currentPage: number = 1;
   totalPage!: number;
   pageTotal: number = 3;
 
-
-  constructor(
-    private imageService: ImageService
-  ) { }
+  constructor(private imageService: ImageService) { }
 
   ngOnInit() {
-    const _this = this;
-
-    this.imageService.loadImageNameList()
-      .subscribe({
-        next() {
-          _this.getImageNameList();
-        },
-        error(err) {
-          console.error(err);
-        },
-      });
+    this.getImageNameList();
   }
 
   getImageNameList() {
-    this.imageService.getImageNameList(this.currentPage, this.pageTotal)
-      .subscribe(
-        (res: string[]) => {
-          this.imageNameList = res;
-        }
+    const _this = this;
+
+    this.imageService.imageNameList
+      .pipe(
+        map(
+          (res: any) => {
+            debugger;
+
+            if (res && res.length == 0) {
+              debugger;
+
+              this.imageService.loadImageNameList()
+                .subscribe(
+                  {
+                    next() {
+                      _this.pagingImages();
+                    },
+                    error(err) {
+                      console.error(err);
+                    },
+                  }
+                );
+            }
+
+          })
       );
   }
 
+  pagingImages() {
+    debugger;
+    this.imageService
+      .getImageNameList(this.currentPage, this.pageTotal)
+      .subscribe((res: string[]) => {
+        console.log('#3 done');
+
+        this.imageNameList = res;
+      });
+  }
 }
