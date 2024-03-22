@@ -57,8 +57,6 @@ export class ImagesComponent {
     this.imageService
       .getImageNameList(this.currentPage, this.pageTotal)
       .subscribe((res: string[]) => {
-        console.log('#3 done');
-
         this.imageNameList = res;
       });
   }

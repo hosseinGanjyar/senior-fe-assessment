@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class ImageService {
+export class FileService {
+
   private _imageNameList: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
   public readonly imageNameList: Observable<string[]> = this._imageNameList.asObservable();
 
@@ -44,11 +45,8 @@ export class ImageService {
   }
 
   getImageNameList(from: number, count: number): Observable<string[]> {
-    console.log('#1 call');
     return this.imageNameList.pipe(
       map((res: string[]) => {
-        // console.log(res.length);
-        console.log('#2 responses');
         return res.splice(from, count);
       })
     );
