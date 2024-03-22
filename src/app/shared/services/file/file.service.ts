@@ -18,7 +18,7 @@ export class FileService {
     });
   }
 
-  loadImageNameList(): Observable<boolean> {
+  loadImageNameList() {
     return this.getImagePathList()
       .pipe(
         map((res: string) => {
@@ -37,9 +37,6 @@ export class FileService {
           });
 
           this._imageNameList.next(arrName);
-
-          debugger;
-          return true;
         })
       );
   }

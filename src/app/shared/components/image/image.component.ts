@@ -32,7 +32,8 @@ export class ImageComponent {
 
   @Input() imgName!: string;
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   onload() {
     this.loading = false;
