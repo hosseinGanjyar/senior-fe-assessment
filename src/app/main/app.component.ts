@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
+import { FileService } from '../shared/services/file/file.service';
 
 
 @Component({
@@ -11,7 +12,14 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'senior-fe-assessment';
+  totalImages: number = 0;
+
+  constructor(
+    private fileService: FileService
+  ) { }
 
   ngOnInit() {
+    this.fileService.getImageNameListCount()
+      .subscribe((res: number) => this.totalImages = res);
   }
 }

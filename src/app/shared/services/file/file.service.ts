@@ -48,4 +48,12 @@ export class FileService {
       })
     );
   }
+
+  getImageNameListCount() {
+    return this.imageNameList.pipe(
+      map((res: string[]) => {
+        return res.length;
+      })
+    );
+  }
 }
