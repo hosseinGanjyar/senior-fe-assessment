@@ -1,39 +1,39 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ImageComponent } from '../../shared/components/image/image.component';
 import { UnAssignedService } from '../../shared/services/un-assigned/un-assigned.service';
 
 @Component({
   selector: 'app-un-assigned',
   standalone: true,
-  imports: [CommonModule, ImageComponent],
+  imports: [CommonModule, ImageComponent, NgxPaginationModule],
   templateUrl: './un-assigned.component.html',
   styleUrl: './un-assigned.component.scss'
 })
 export class UnAssignedComponent {
   imageNameList: string[] = [];
   currentPage: number = 0;
-  totalPage!: number;
-  pageTotal: number = 3;
+  totalImages: number = 0;
+  pageTotal: number = 6;
 
   constructor(private imageService: UnAssignedService) { }
 
   ngOnInit() {
-    this.pagingImages();
+    this.loadImages();
   }
 
-  pagingImages() {
+  loadImages() {
     let _this = this;
 
-    this.imageService.getImageNameList(this.currentPage, this.pageTotal)
+    this.imageService.getImageNameList()
       .subscribe(
         {
           next(value: string[] | undefined) {
-            debugger;
-
-            if (value)
+            if (value) {
               _this.imageNameList = value;
-            else // try to get data from local storage
+              _this.totalImages = value?.length;
+            } else // try to get data from local storage
               _this.imageService.setImageNameListToStorage();
           }
         }

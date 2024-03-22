@@ -20,15 +20,13 @@ export class UnAssignedService {
     return this.currentImageNameList;
   }
 
-  getImageNameList(from: number, count: number): Observable<string[] | undefined> {
-    debugger;
-
+  getImageNameList(from?: number, count?: number): Observable<string[] | undefined> {
     return this.getCurrentImageNameList()
       .pipe(
         map((res: string[] | undefined) => {
-          debugger;
           if (res) {
-            return res.splice(from, count);
+            // return res.splice(from, count);
+            return res;
           }
           else
             return res;

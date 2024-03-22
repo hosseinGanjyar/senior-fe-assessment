@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UnAssignedService } from '../../shared/services/un-assigned/un-assigned.service';
 
 @Component({
   selector: 'app-assigned',
@@ -17,10 +16,9 @@ export class AssignedComponent {
   ];
 
 
-  constructor(private imageService: UnAssignedService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.imageService.unAssignImage('Hi');
   }
 
 }
