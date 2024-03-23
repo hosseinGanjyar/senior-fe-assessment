@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ImageComponent } from '../../shared/components/image/image.component';
+import { AlertService } from '../../shared/services/alert/alert.service';
 import { AssignedService } from '../../shared/services/assigned/assigned.service';
 
 @Component({
@@ -17,7 +18,10 @@ export class AssignedComponent {
   totalImages: number = 0;
   pageTotal: number = 6;
 
-  constructor(private imageService: AssignedService) { }
+  constructor(
+    private imageService: AssignedService,
+    private alertService: AlertService
+  ) { }
 
   ngOnInit() {
     this.loadImages();
@@ -43,6 +47,7 @@ export class AssignedComponent {
   unAssignImage(imageName: string) {
     this.imageService.popNewImageFromQ('q-assigned', imageName);
     this.imageService.pushNewImageToQ('q-unAssigned', imageName);
+    this.alertService.openSnackBar(`Remove image ${imageName} from Task`, 1000);
   }
 
 }
