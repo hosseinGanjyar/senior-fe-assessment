@@ -1,5 +1,11 @@
 <section class="h-100">
-  <div class="card card-cover h-100 overflow-hidden text-bg-light rounded-4 shadow-lg">
+  <button mat-mini-fab color="warn" id="close_FullScreen" title="close" (click)="isFullScreen = !isFullScreen"
+    *ngIf="isFullScreen">
+    <mat-icon>close</mat-icon>
+  </button>
+
+  <div class="card card-cover h-100 overflow-hidden text-bg-light rounded-4 shadow-lg"
+    [ngClass]="{'fullScreen': isFullScreen}">
     <div [hidden]="hasError">
       <img [ngClass]="{ blur: loading }" ngSrc="{{ baseUrl }}{{ imgName }}" alt="imgName" fill priority
         (load)="onload()" (error)="onError()" *ngIf="!reloading" />
@@ -20,9 +26,9 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
 
-    <div class="card-overlay">
+    <div class="card-overlay" [hidden]="isFullScreen">
       <div class="actions w-100 ">
-        <button mat-raised-button color="primary">
+        <button mat-raised-button color="primary" (click)="toggleFullScreen()">
           Show
         </button>
 

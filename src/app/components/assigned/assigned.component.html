@@ -1,7 +1,7 @@
 <section>
     <div class="paging-info border-bottom">
         <span class="h3">Task X: Total items {{totalImages}} </span>
-        <pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
+        <pagination-controls (pageChange)="currentPage = $event" *ngIf="imageNameList.length"></pagination-controls>
     </div>
 
     <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">

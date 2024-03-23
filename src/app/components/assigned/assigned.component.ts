@@ -47,7 +47,7 @@ export class AssignedComponent {
   unAssignImage(imageName: string) {
     this.imageService.popNewImageFromQ('q-assigned', imageName);
     this.imageService.pushNewImageToQ('q-unAssigned', imageName);
-    this.alertService.openSnackBar(`Remove image ${imageName} from Task`, 1000);
+    this.alertService.openSnackBar(`Remove image ${imageName} from Task`, 3000);
   }
 
 }

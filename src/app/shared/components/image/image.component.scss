@@ -37,3 +37,23 @@
   flex-flow: row;
   justify-content: space-evenly;
 }
+
+.fullScreen {
+  margin: 0;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+
+
+#close_FullScreen {
+  position: fixed;
+  top: 0;
+  z-index: 99999;
+  margin: 1rem;
+  left: 0;
+}
