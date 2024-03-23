@@ -27,7 +27,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 })
 export class ImageComponent {
   baseUrl: string =
-    'https://vst-test-images.s3.ap-southeast-1.amazonaws.com/sfe-images/a';
+    'https://vst-test-images.s3.ap-southeast-1.amazonaws.com/sfe-images/';
   loading: boolean = true;
   hasError: boolean = false;
   reloading: boolean = false;

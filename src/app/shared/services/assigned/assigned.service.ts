@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, map } from 'rxjs';
-import { AssignedService } from '../assigned/assigned.service';
 import { FileService } from '../file/file.service';
 import { StorageService } from '../storage/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnAssignedService {
+export class AssignedService {
   private _currentImageNameList$: BehaviorSubject<string[] | undefined> = new BehaviorSubject<string[] | undefined>(undefined);
   public readonly currentImageNameList$: Observable<string[] | undefined> = this._currentImageNameList$?.asObservable();
   private Q_unAssignedName = 'q-unAssigned';
@@ -15,8 +14,7 @@ export class UnAssignedService {
 
   constructor(
     private store: StorageService,
-    private fileService: FileService,
-    private assignedService: AssignedService
+    private fileService: FileService
   ) { }
 
   private getCurrentImageNameList(): Observable<string[] | undefined> {
@@ -37,10 +35,10 @@ export class UnAssignedService {
   }
 
   setImageNameListToStorage(): void {
-    const Q_unAssigned = this.store.localGetItem(this.Q_unAssignedName);
+    const Q_assigned = this.store.localGetItem(this.Q_assignedName);
 
-    if (Q_unAssigned) {
-      this.setCurrentImageNameList(JSON.parse(Q_unAssigned));
+    if (Q_assigned) {
+      this.setCurrentImageNameList(JSON.parse(Q_assigned));
     } else { // first load of project
       let _this = this;
 
@@ -48,7 +46,7 @@ export class UnAssignedService {
         .subscribe(
           {
             next(value: string[]) {
-              _this.fillQUnAssigned(value);
+              _this.fillQAssigned(value);
               _this.setCurrentImageNameList(value);
             }
           }
@@ -60,9 +58,8 @@ export class UnAssignedService {
     this._currentImageNameList$.next(data);
   }
 
-  fillQUnAssigned(data: string[]) {
-    this.store.localSetItem(this.Q_unAssignedName, JSON.stringify(data));
-    this.store.localSetItem(this.Q_assignedName, JSON.stringify([]));
+  fillQAssigned(data: string[]) {
+    this.store.localSetItem(this.Q_assignedName, JSON.stringify(data));
   }
 
   popNewImageFromQ(qName: string, imageName: string) {
@@ -83,8 +80,6 @@ export class UnAssignedService {
       let qImageNames: string[] = JSON.parse(q);
       qImageNames.push(imageName);
       this.store.localSetItem(qName, JSON.stringify(qImageNames));
-      this.assignedService.setCurrentImageNameList(qImageNames);
     }
   }
-
 }
