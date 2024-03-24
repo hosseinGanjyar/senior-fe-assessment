@@ -28,17 +28,21 @@
 
     <div class="card-overlay" [hidden]="isFullScreen">
       <div class="actions w-100 ">
-        <button mat-raised-button color="primary" (click)="toggleFullScreen()">
-          Show
-        </button>
+        <div>
+          <button mat-raised-button color="primary" class="ms-3" (click)="toggleFullScreen()">
+            Show
+          </button>
 
-        <button mat-raised-button color="accent" *ngIf="!hasAssigned" (click)="onToggleAssignImage(imgName)">
-          Assign
-        </button>
+          <button mat-raised-button color="accent" *ngIf="!hasAssigned" (click)="onToggleAssignImage(imgName)">
+            Assign
+          </button>
 
-        <button mat-raised-button color="warn" *ngIf="hasAssigned" (click)="onToggleAssignImage(imgName)">
-          Un-Assign
-        </button>
+          <button mat-raised-button color="warn" *ngIf="hasAssigned" (click)="onToggleAssignImage(imgName)">
+            Un-Assign
+          </button>
+        </div>
+
+        <span class="d-inline-flex align-items-center">{{imgName}}</span>
       </div>
     </div>
   </div>

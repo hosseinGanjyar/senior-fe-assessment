@@ -35,7 +35,8 @@
 .actions {
   display: flex;
   flex-flow: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  direction: rtl;
 }
 
 .fullScreen {
