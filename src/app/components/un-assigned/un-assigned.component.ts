@@ -5,7 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ImageComponent } from '../../shared/components/image/image.component';
 import { AlertService } from '../../shared/services/alert/alert.service';
-import { UnAssignedService } from '../../shared/services/un-assigned/un-assigned.service';
+import { StateService } from '../../shared/services/state/state.service';
 
 
 @Component({
@@ -24,8 +24,8 @@ export class UnAssignedComponent {
 
 
   constructor(
-    private imageService: UnAssignedService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private stateService: StateService
   ) { }
 
   ngOnInit() {
@@ -35,7 +35,7 @@ export class UnAssignedComponent {
   loadImages() {
     let _this = this;
 
-    this.imageService.getImageNameList()
+    this.stateService.getCurrentImageNameList('unAssigned')
       .subscribe(
         {
           next(value: string[] | undefined) {
@@ -43,15 +43,19 @@ export class UnAssignedComponent {
               _this.imageNameList = value;
               _this.totalImages = value?.length;
             } else // try to get data from local storage
-              _this.imageService.setImageNameListToStorage();
+              _this.stateService.loadImageNameListToStorage('unAssigned');
           }
         }
       );
   }
 
   assignImage(imageName: string) {
-    this.imageService.popNewImageFromQ('q-unAssigned', imageName);
-    this.imageService.pushNewImageToQ('q-assigned', imageName);
+    this.stateService.popNewImageFromQ('q-unAssigned', imageName);
+    this.stateService.pushNewImageToQ('q-assigned', imageName);
+
+    // update states
+    this.stateService.updateStates();
+
     this.alertService.openSnackBar(`Add image ${imageName} to Task`, 3000);
   }
 
